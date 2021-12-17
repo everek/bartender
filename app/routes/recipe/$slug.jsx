@@ -1,7 +1,14 @@
 import React from 'react'
 import { useLoaderData } from 'remix'
 import { useQuery, gql } from '@apollo/client'
-import { render, NODE_UL, NODE_OL, NODE_LI } from 'storyblok-rich-text-react-renderer'
+import {
+    render,
+    NODE_UL,
+    NODE_OL,
+    NODE_LI,
+} from 'storyblok-rich-text-react-renderer'
+import Loading from '~/components/Loading'
+import RecipeContentContainer from '~/components/RecipeContentContainer'
 
 export const loader = async ({ params }) => {
     return params.slug
@@ -35,7 +42,7 @@ export default function RecipeSlug() {
     })
 
     if (loading) {
-        return <p className="navbar-text navbar-right">Loading...</p>
+        return <Loading />
     }
 
     const recipe = data.RecipeItem
@@ -52,15 +59,13 @@ export default function RecipeSlug() {
             <div className="border-4 -mt-10 border-black bg-white px-6 py-4 shadow-md">
                 <h1 className="text-3xl font-mono font-bold">{recipe.name}</h1>
             </div>
-            <div className="w-3/5 mt-8 font-mono">
-                {recipe.content.description}
-            </div>
-            <div className="w-3/5 mt-8 font-mono">
+            <div className="w-3/5 my-8 font-mono">{recipe.content.description}</div>
+            <RecipeContentContainer title="Ingredients" id="ingredients">
                 {render(recipe.content.ingredients, {
                     nodeResolvers: {
                         [NODE_UL]: (children) => {
                             return (
-                                <ul className="ml-8 list-disc">{children}</ul>
+                                <ul className="list-disc ml-8">{children}</ul>
                             )
                         },
                         [NODE_LI]: (children) => {
@@ -68,13 +73,15 @@ export default function RecipeSlug() {
                         },
                     },
                 })}
-            </div>
-            <div className="w-3/5 mt-8 font-mono">
-                {render(recipe.content.recipe, {
+            </RecipeContentContainer>
+            <RecipeContentContainer title="Instructions" id="instructions">
+            {render(recipe.content.recipe, {
                     nodeResolvers: {
                         [NODE_OL]: (children) => {
                             return (
-                                <ul className="ml-8 list-decimal">{children}</ul>
+                                <ul className="list-decimal ml-8">
+                                    {children}
+                                </ul>
                             )
                         },
                         [NODE_LI]: (children) => {
@@ -82,7 +89,7 @@ export default function RecipeSlug() {
                         },
                     },
                 })}
-            </div>
+            </RecipeContentContainer>
         </div>
     )
 }

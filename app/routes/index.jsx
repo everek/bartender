@@ -1,6 +1,7 @@
 import { useLoaderData, json, Link } from 'remix'
 import { useQuery, gql } from '@apollo/client'
 import Teaser from '~/components/Teaser'
+import Loading from '~/components/Loading'
 
 // https://remix.run/api/conventions#meta
 export let meta = () => {
@@ -30,7 +31,7 @@ export default function Index() {
     const { loading, error, data } = useQuery(query)
 
     if (loading) {
-        return <p className="navbar-text navbar-right">Loading...</p>
+        return <Loading />
     }
 
     console.log('data', data)
