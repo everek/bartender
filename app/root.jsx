@@ -15,6 +15,7 @@ import {
     ApolloProvider,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { AnimatePresence } from 'framer-motion'
 
 import styles from './tailwind.css'
 
@@ -48,11 +49,13 @@ export function links() {
 export default function App() {
     return (
         <ApolloProvider client={client}>
-            <Document>
-                <Layout>
-                    <Outlet />
-                </Layout>
-            </Document>
+            <AnimatePresence initial={false} exitBeforeEnter>
+                <Document>
+                    <Layout>
+                        <Outlet />
+                    </Layout>
+                </Document>
+            </AnimatePresence>
         </ApolloProvider>
     )
 }

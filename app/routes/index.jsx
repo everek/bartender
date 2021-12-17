@@ -2,6 +2,9 @@ import { useLoaderData, json, Link } from 'remix'
 import { useQuery, gql } from '@apollo/client'
 import Teaser from '~/components/Teaser'
 import Loading from '~/components/Loading'
+import { motion } from 'framer-motion'
+
+const transition = { duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] }
 
 // https://remix.run/api/conventions#meta
 export let meta = () => {
@@ -40,7 +43,11 @@ export default function Index() {
 
     return (
         <div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+            <motion.div
+                className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10"
+                exit={{ opacity: 0 }}
+                transition={transition}
+            >
                 {data.RecipeItems.items.map((recipe) => (
                     <Teaser
                         key={recipe.id}
@@ -49,7 +56,7 @@ export default function Index() {
                         image={recipe.content.cover_image}
                     />
                 ))}
-            </div>
+            </motion.div>
         </div>
     )
 }
