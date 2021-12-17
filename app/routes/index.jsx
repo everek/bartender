@@ -40,7 +40,7 @@ export default function Index() {
 
     return (
         <div>
-            <div className="grid grid-cols-4 gap-4 mt-10">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
                 {data.RecipeItems.items.map((recipe) => (
                     <Teaser
                         key={recipe.id}
